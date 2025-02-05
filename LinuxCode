@@ -1,0 +1,311 @@
+LINUX LOCAL WEBHOST CODE
+
+#Install apache2
+
+vboxuser@Ubuntu:~$ sudo apt update
+vboxuser@Ubuntu:~$ sudo apt install apache2 -y
+#Enabling apache2 and checking the status
+vboxuser@Ubuntu:~$ sudo systemctl start apache2
+vboxuser@Ubuntu:~$ sudo systemctl enable apache2
+vboxuser@Ubuntu:~$ sudo systemctl status apache2
+#Inserting the html and css code into their respective files
+vboxuser@Ubuntu:~$ sudo nano index.html
+vboxuser@Ubuntu:~$ sudo nano AboutUS.html
+vboxuser@Ubuntu:~$ sudo nano ABS.css
+#Changing the ownership of the directory
+vboxuser@Ubuntu:~$ sudo chmod -R 755 /var/www/html
+vboxuser@Ubuntu:~$ sudo chown -R www-data:www-data /var/www/html
+#Restarting Apache2
+vboxuser@Ubuntu:~$ sudo systemctl restart apache2
+#Changes the website to our website name
+vboxuser@Ubuntu:~$ sudo nano /etc/apache2/sites-available/AmericanBusNetwork.conf
+vboxuser@Ubuntu:~$ sudo systemctl reload apache2
+#Adding the website name to the hosts
+vboxuser@Ubuntu:~$ sudo nano /etc/hosts
+#Type 127.0.0.1 AmericanBusNetwork.local
+#Switching Directories
+vboxuser@Ubuntu:~$ cd /var/www/html
+#Creates the image directory
+vboxuser@Ubuntu:~$: /var/www/html$ sudo mkdir images
+ #Copying the images one by one into the directory
+vboxuser@Ubuntu:~$: sudo cp /home/vboxuser/Downloads/download1.jpeg /var/www/html/images (repeat for all images)
+#Changes the ownership of the images to allow display
+vboxuser@Ubuntu:~$ sudo chmod 755 /var/www/html/images
+vboxuser@Ubuntu:~$ sudo chown vboxuser:www-data /var/www/html/images
+#Restart Apache2 again
+vboxuser@Ubuntu:~$ sudo systemctl restart apache2
+#Installing a Apache SSL certificate 
+boxuser@Ubuntu:~$ sudo a2enmod ssl
+vboxuser@Ubuntu:~$ sudo systemctl restart apache2
+#Creates the self made SSL certificate 
+vboxuser@Ubuntu:~$sudo openssl req -x509 -nodes -days 654 -newkey rsa:2048 \
+> -keyout /etc/ssl/private/apache-selfsigned.key
+> -out /etc/ssl/certs/apache-selfsigned.crt
+#Information will be asked to place into the certificate
+#Creating the virtual host
+vboxuser@Ubuntu:~$ sudo nano /etc/apache2/sites-available/default-ssl.conf
+ <VirtualHost *:443> 
+ServerAdmin webmaster@localhost 
+ServerName localhost
+ DocumentRoot /var/www/html 
+SSLEngine on 
+SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt 
+SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+ <Directory /var/www/html>
+ AllowOverride All
+ </Directory>
+ ErrorLog ${APACHE_LOG_DIR}/error.log 
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+ </VirtualHost>
+vboxuser@Ubuntu:~$ sudo systemctl reload apache2
+vboxuser@Ubuntu:~$ sudo a2ensite default-ssl
+#Since it is a self certificate,a warning will be issued
+#Fixes the warning 
+vboxuser@Ubuntu:~$ sudo cp server.crt
+/usr/local/share/ca-certificates/extra/
+vboxuser@Ubuntu:~$ sudo update-ca-certificates
+—----------------------------------------------------------------------------------------------------------------------------------
+#Setting document type
+<!DOCTYPE html>
+<html lang="en">
+#Creating the title 
+<head>
+<title>American Business Network</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+#Applying the css external sheet
+<link href="ABS.css" rel="stylesheet">
+</head>
+<body>
+#Setting up the navigation
+  <header class="home">
+    <h1 style="text-align:center; margin-top:140px;"><a href="index.html">American Business Network</a></h1>
+  </header>
+  <nav>
+   <ul>
+     <li><a href="index.html">Home</a></li> 
+     <li><a href="AboutUS.html">About Us</a></li> 
+     <li><a href="events.html">Events</a></li> 
+     <li><a href="contact.html">Contact</a></li>
+    </ul> 
+   </nav>
+  #Adding the css wrapper 
+<div id="wrapper">
+ # Creating the main 
+ <main>
+    #Applying the mission statement 
+    <h2>Mission Statement </h2>
+    <p>To empower <span class="studio">American</span> businesses & 
+	   professionals by providing resources, advocacy, support, and networking opportunities 
+	   that foster growth. Our priority is to elevate our communities and contribute to the 
+	   economy through inclusive and collaborative initiatives. 
+	   <span class="studio"></span></p>
+    <ul>
+      <li>Expand Your Business Connections.</li>
+      <li>Join us at our upcoming events to engage with a vibrant network of professionals
+     	  and business owners.</li>
+      <li>Our events provide a unique platform to expand your professional network.</li>
+      <li>By attending, you'll have the chance to forge meaningful connections,<br> 
+	      gain industry knowledge, and contribute to the growth and success of our community.</li>
+    </ul>
+    #Clearing the div format
+<div class="clear">
+  #Creating the container
+<span class="studio">American Business Network</span><br>
+      612 Serenity Way<br>
+      El Dorado, CA 96162<br>
+      <a id="mobile" href="tel:888-555-5555">888-555-5555</a><br><br>
+      <span id="desktop">888-555-5555</span><br><br>
+    </div>
+  </main>
+#Closing the main html
+  #Creating the footer
+<footer>
+    Copyright &copy; 2025 American Business Network<br>
+    
+  </footer>
+</div>
+</body>
+</html>
+—----------------------------------------------------------------------------------------------------------------------------------
+#Setting the doc type
+!DOCTYPE html>
+#setting up the website language
+<html lang="en">
+#Creating the header
+<head>
+#Inserting the title of the page
+<title>American Business Network::About Us</title>
+<meta charset="utf-8">
+#setting up the device format
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+#Linking external css
+<link href="ABS.css" rel="stylesheet">
+</head>
+<body>
+#Creating the header class
+  <header class="content">
+    <h1 style="text-align:center; margin-top:120px;"><a href="index.html">American Business Network</a></h1>
+  </header>
+  <nav>
+     <ul>
+     <li><a href="index.html">Home</a></li> 
+     <li><a href="about-us.html">About Us</a></li> 
+     <li><a href="events.html">Events</a></li> 
+     <li><a href="contact.html">Contact</a></li>
+    </ul> 
+   </nav>
+  #Applying the wrapper to the main
+<div id="wrapper">
+ #Creating the main
+ <main>
+    <h2>About American Business Network</h2>
+        <div id="flow">
+        <section>
+        <h3>Mission Statement</h3>
+          <p>To empower American businesses & professionals by providing resources, 
+		     advocacy, support, and networking opportunities that foster growth. 
+			 Our priority is to elevate our communities and contribute to the economy 
+			 through inclusive and collaborative initiatives.</p></section>
+      #Applying sections
+  <section>
+        <h3>Who We Are</h3>
+          <p>American Business Network (ABN) is a professional network dedicated 
+		     to empowering small to midsized businesses in Southern California. We connect 
+			 business owners and professionals with resources, tools, and programs to help 
+			 them succeed. ABN is committed to fostering a thriving business community 
+			 through networking events, mixers, and annual gatherings.</p></section>
+         
+          </div>
+    <div id="mathero">
+      
+    </div>
+  </main>
+ #creating the header
+ <footer>
+    Copyright &copy; 2025 American Business Network<br>
+    
+  </footer>
+</div>
+</body>
+</html>
+—---------------------------------------------------------------------------------------------------------------------------
+* { box-sizing: border-box; }
+
+body { background-color: #d1f9f4;
+       color: #40407A;
+       font-family: Arial, Verdana, sans-serif;
+       margin: 0;  
+}
+
+header { background-color: #40407A; 
+         background-image: url(images/p2.jpg); 
+         background-size: 100% 100%;
+         color: #FFFFFF;
+         font-size: 90%; 
+         margin-top: 50px; 
+         min-height: 200px;
+} 
+nav { width: 100%;
+      padding-top: 0.5em; 
+      padding: 1em;
+      padding-right: 0;
+      position: fixed; top: 0; left: 0;
+      text-align: right;
+      background-color: #FFFFFF;
+      margin: 0;
+      z-index: 9999; 
+} 
+
+nav a { text-decoration: none;
+        display: block;
+}
+
+nav a:link { color: #3F2860; }
+nav a:visited { color: #497777; }
+nav a:hover { color: #A26100; }
+
+nav ul { display: flex;
+         flex-flow: row wrap;
+         list-style-type: none;
+         margin: 0; font-size: 1.2em;
+}
+nav li { display: inline;
+         width: 40%;
+         padding-top: 0; padding-bottom: 0;
+         padding-right: 1em; padding-left: 1em;
+}
+
+.studio { font-style: italic; }
+
+footer { font-size: .60em; 
+         font-style: italic; 
+         text-align: center;
+} 
+
+#wrapper { padding: 2em;
+           background-color: #F5F5F5; 
+} 
+
+header a { text-decoration: none; }
+header a:link { color: #FFF; }
+header a:visited { color: #FFF; }
+headera:hover { color: #EDF5F5; }
+
+.home { height: 20vh;
+        padding-top: 2em; padding-left: 10%;
+}
+.content { height: 20vh;
+        padding-top: 2em; padding-left: 10%;
+}
+#mathero { background-image: url(images/p5.jpg);
+           background-repeat: no-repeat;
+           height: 300px;
+           background-size: cover;
+           display: none;
+}
+#loungehero { background-image: url(images/yogalounge.jpg);
+              background-repeat: no-repeat;
+              height: 300px;
+              background-size: cover;
+              display: none;
+}
+section { padding-left: .5em;
+          padding-right: .5em;
+}
+#mobile { display: inline;
+}
+#desktop { display: none;
+}
+/* Configure a Medium Layout*/
+@media (min-width: 600px)
+{
+  nav ul { display: flex; 
+           flex-flow: row nowrap;
+           justify-content: flex-end; }
+  nav li { width: 7em; }
+  section { padding-left: 2em; padding-right: 2em; }
+  #mathero { display: block; padding-bottom: 1em; }
+  #loungehero { display: block; padding-bottom: 1em; }
+  #flow { display: flex; flex-flow: row; }
+  #mobile { display: none; }
+  #desktop { display: inline; }
+}
+
+/* Configure a Large Layout*/
+@media (min-width: 1024px)
+{
+  header { font-size: 120%; }
+  .home { height: 50vh;
+          padding-top: 5em;
+          padding-left: 8em; }
+  .content { height: 30vh;
+             padding-top: 1em;
+             padding-left: 8em; }
+  #wrapper { width: 80%;
+             margin: auto; }
+}
+
+—---------------------------------------------------------------------------------------------------------------------------
+
+
